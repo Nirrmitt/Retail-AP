@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 
-"RETAIL AP"
+# "RETAIL AP"
 
 A local data pipeline and visualization stack for monitoring retail transaction metrics. The system ingests simulated sales data, stores it in a normalized PostgreSQL database, exposes a validated REST API, and renders live KPIs and trend charts in a Streamlit dashboard.
 
