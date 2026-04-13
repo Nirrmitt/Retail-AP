@@ -1,126 +1,182 @@
-[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https:://www.python.org)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https://www.python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.31+-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+#  Retail Analytics Platform
 
-# "RETAIL AP"
+A **production-style retail data pipeline and analytics system** that replaces manual spreadsheet reporting with a **real-time, queryable, and scalable workflow**.
 
-A local data pipeline and visualization stack for monitoring retail transaction metrics. The system ingests simulated sales data, stores it in a normalized PostgreSQL database, exposes a validated REST API, and renders live KPIs and trend charts in a Streamlit dashboard.
+This platform simulates transaction data, processes it through a validated API, stores it in a normalized PostgreSQL database, and visualizes business KPIs via an interactive dashboard.
 
-Built to replace manual spreadsheet reporting with a queryable, reproducible analytics workflow.
+---
 
-## Architecture
+##  Key Highlights
+
+- 📊 Real-time KPI tracking (Revenue, Orders, AOV)
+- ⚡ Async backend with high-performance DB access
+- 🔄 Live transaction ingestion pipeline
+- 📈 Interactive Streamlit dashboard
+- 🧱 Fully normalized relational schema
+- 🐳 Containerized PostgreSQL setup
+
+---
+
+##  Architecture
 
 ```mermaid
-graph LR
-    Sim[Transaction Simulator] -->|HTTP POST /ingest| API[FastAPI Backend]
-    DB[(PostgreSQL 15)] <-->|asyncpg Pool| API
-    API -->|REST/JSON| UI[Streamlit Dashboard]
-    UI -->|Auto-refresh| API
+flowchart LR
+    A[Simulator] -->|Send Transactions| B[FastAPI Backend]
+    B -->|Query/Insert| C[(PostgreSQL DB)]
+    B -->|Serve Data| D[Streamlit Dashboard]
+    D -->|Fetch Updates| B
+```
 
-Tech Stack
-| Layer        | Technology         | Role                                                      |
-|--------------|-------------------|----------------------------------------------------------|
-| Database     | PostgreSQL 15     | Relational storage, foreign key constraints, optimized queries |
-| Backend      | asyncpg           | High-performance async PostgreSQL driver                 |
-| Data Generation | Faker         | Realistic synthetic data generation for testing          |
-| Connector    | psycopg2-binary   | Reliable PostgreSQL adapter for schema validation & operations |
+## Tech Stack
 
-Features
-Normalized Schema: 4-table relational design with UUID primary keys, CHECK constraints, and cascading deletes.
-Async API Layer: Connection pooling via asyncpg, Pydantic request/response models, and automatic OpenAPI documentation.
-Live Ingestion: Simulator fetches valid foreign keys before posting, handles connection drops, and respects a 30-second cadence.
-Dashboard UX: Custom CSS theming, date-range filtering, auto-refresh, and graceful fallbacks for missing data.
-Containerized DB: One-command PostgreSQL setup with health checks and persistent volume mapping.
+| Layer           | Technology        | Role                                                      |
+| --------------- | ----------------- | --------------------------------------------------------- |
+| Database        | PostgreSQL 15     | Relational storage with constraints and optimized queries |
+| Backend         | FastAPI + asyncpg | Async API layer with connection pooling                   |
+| Data Generation | Faker             | Synthetic data generation for simulation                  |
+| Connector       | psycopg2-binary   | DB operations and schema execution                        |
+| Frontend        | Streamlit         | Interactive analytics dashboard                           |
 
-Quick Start
+
+## Features
+### Data & Backend
+Normalized 4-table schema with UUID primary keys
+Foreign key constraints with cascading deletes
+Transaction-safe inserts (no partial writes)
+
+### API Layer
+Built with FastAPI
+Pydantic validation for request/response models
+Auto-generated Swagger docs (/docs)
+
+### Live Ingestion
+Simulates real-world webhook pipeline
+Handles retries with exponential backoff
+Maintains referential integrity
+
+### Dashboard
+Real-time KPI visualization
+Date filtering + auto-refresh
+Clean UI with custom theming 
+
+### Infrastructure
+Dockerized PostgreSQL instance
+Persistent volumes + health checks
+
+## Quick Start
 Prerequisites
 Python 3.10+
 Docker Desktop
 Git
 
-Setup
-# 1. Clone & enter project
+## Setup
+Clone repository
+
 git clone https://github.com/Nirrmitt/retail-analytics-platform.git
 cd retail-analytics-platform
 
-# 2. Create virtual environment & install dependencies
+### Create virtual environment
 python -m venv venv
-venv\Scripts\activate  # Windows
-# source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate   :Windows
+source venv/bin/activate  :macOS/Linux
+
+### Install dependencies
 pip install -r requirements.txt
 
-# 3. Start database
+### Start database
 docker compose up -d
 
-# 4. Apply schema & seed data
+### Initialize schema & seed data
 python database/force_create_tables.py
 python database/seed_data.py
 
-Run Services
-Open three separate terminals:
-Terminal 1: API Server
-$env:PYTHONPATH = "."
+### Run Services
+
+### Open 3 terminals:
+
+1️⃣ API Server
+$env:PYTHONPATH="."
 uvicorn src.api.main:app --reload --port 8000
 
-Terminal 2: Dashboard
-powershell
+2️⃣ Dashboard
 streamlit run src/dashboard/app.py
 
-Terminal 3: Live Simulator
-powershell
+3️⃣ Live Simulator
 python scripts/live_simulator.py
 
-Access:
-Dashboard: http://localhost:8501
-API Docs: http://localhost:8000/docs
-Health Check: http://localhost:8000/health
+🌐 Access Points
+Dashboard → http://localhost:8501
+API Docs → http://localhost:8000/docs
+Health Check → http://localhost:8000/health
 
-Project Structure
-├── database/               # DDL, seed scripts, diagnostic tools
-├── scripts/                # Live data simulator
+## Project Structure'
+
+├── database/               # Schema & seed scripts
+├── scripts/                # Data simulator
 ├── src/
-│   ├── api/                # FastAPI routes, services, Pydantic models
-│   ├── dashboard/          # Streamlit app, API client, components
-│   └── config/             # Pydantic settings, environment management
-├── .streamlit/             # Streamlit theme configuration
-├── docker-compose.yml      # PostgreSQL container definition
-├── requirements.txt        # Pinned Python dependencies
+│   ├── api/                # FastAPI backend
+│   ├── dashboard/          # Streamlit UI
+│   └── config/             # App configuration
+├── .streamlit/             # UI theme config
+├── docker-compose.yml      # DB container
+├── requirements.txt
 └── README.md
 
-API Endpoints
-| Method | Endpoint                        | Description                                                      |
-|--------|---------------------------------|------------------------------------------------------------------|
-| GET    | /health                         | Checks database connectivity and service health                 |
-| GET    | /api/v1/kpi/revenue             | Returns aggregated revenue, order count, and AOV (configurable) |
-| GET    | /api/v1/sales/daily-revenue     | Provides time-series revenue data for trend analysis            |
-| GET    | /api/v1/sales/category-revenue  | Returns revenue breakdown by category                           |
-| POST   | /api/v1/data/ingest             | Ingests transaction data with validation and atomic insertion   |
+## API Endpoints
 
-All endpoints return JSON. Swagger UI at /docs provides interactive testing.
-Data Ingestion Pipeline
-The simulator (scripts/live_simulator.py) mimics production webhook behavior:
-Queries the database at startup to fetch valid customer_id and product_id UUIDs.
-Generates payloads with 1–3 line items per transaction.
-POSTs to /api/v1/data/ingest with exponential backoff on connection failures.
-Logs success/failure with timestamps for pipeline monitoring.
-Foreign key validation ensures referential integrity. The API endpoint wraps inserts in a database transaction to prevent partial writes.
+| Method | Endpoint                       | Description                                     |
+| ------ | ------------------------------ | ----------------------------------------------- |
+| GET    | /health                        | Checks database connectivity and service health |
+| GET    | /api/v1/kpi/revenue            | Revenue, order count, AOV (configurable)        |
+| GET    | /api/v1/sales/daily-revenue    | Time-series revenue trends                      |
+| GET    | /api/v1/sales/category-revenue | Revenue breakdown by category                   |
+| POST   | /api/v1/data/ingest            | Validated transaction ingestion                 |
 
-Development Notes
-Windows Line Endings: PowerShell pipes and CRLF encoding can cause silent psql failures. The force_create_tables.py script bypasses file encoding issues by executing SQL over a direct psycopg2 connection.
-Streamlit Caching: The dashboard uses st.rerun() and explicit cache clearing to reflect live data. The .streamlit/config.toml applies a consistent theme without modifying component code.
-Port Conflicts: If 8000 or 5433 are occupied, update docker-compose.yml and the uvicorn command accordingly.
-Import Paths: $env:PYTHONPATH = "." is required on Windows to resolve src.* imports when launching from the project root.
+📌 All endpoints return JSON. Swagger UI available at /docs.
 
-Production Considerations
-This repository is structured for local development and portfolio demonstration. For production deployment:
-Replace the simulator with actual e-commerce webhooks or a message broker (Kafka/RabbitMQ).
-Add Redis caching for high-read KPI endpoints.
-Implement JWT authentication and rate limiting on the ingestion route.
-Switch uvicorn to a process manager (systemd, Docker Swarm, or Kubernetes).
-Rotate database credentials via environment variables or a secrets manager.
-License
-MIT License. Free to use, modify, and reference in technical interviews or portfolio reviews.
+## Data Pipeline
 
+### The simulator mimics a real-world ingestion system:
+
+Fetches valid customer_id and product_id
+Generates realistic transactions (1–3 items)
+Sends POST requests to ingestion API
+Uses retry logic with exponential backoff
+Logs pipeline activity for monitoring
+
+## Development Notes
+ Windows users: Set PYTHONPATH="." to avoid import issues
+ Streamlit uses st.rerun() for live updates
+ Change ports if conflicts occur (8000 / 5433)
+ SQL execution handled via Python to avoid encoding issues
+ Production Considerations
+
+## To scale this system:
+
+Replace simulator with Kafka / RabbitMQ
+Add Redis caching for KPI endpoints
+Implement JWT authentication
+Use Docker/Kubernetes for deployment
+Manage secrets via environment variables
+
+## License
+
+MIT License: free to use, modify, and showcase in portfolios.
+
+##  Let's Connect
+
+Building scalable data systems and real-world AI projects. Always open to collaborations, internships, and impactful opportunities.
+
+- 💼 LinkedIn → https://www.linkedin.com/in/n-r-t/
+- 🧑‍💻 GitHub → https://github.com/Nirrmitt  
+- 📧 Email → nirrmit.rtickoo@gmail.com
+
+---
+
+### Star this repo if it helped you, and feel free to fork & build on top of it!
