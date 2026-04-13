@@ -3,7 +3,9 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.31+-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-"Retail AP"
+
+
+"RETAIL AP"
 
 A local data pipeline and visualization stack for monitoring retail transaction metrics. The system ingests simulated sales data, stores it in a normalized PostgreSQL database, exposes a validated REST API, and renders live KPIs and trend charts in a Streamlit dashboard.
 
