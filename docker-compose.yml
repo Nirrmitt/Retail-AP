@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: retail_db
+    environment:
+      POSTGRES_DB: retail_analytics
+      POSTGRES_USER: analyst
+      POSTGRES_PASSWORD: analyst_pass
+    ports:
+      - "5433:5432"  # Changed to 5433 to avoid Windows port conflicts
+    volumes:
+      - pg:/var/lib/postgresql/data  # Only keep the data volume
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U analyst"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pg:
