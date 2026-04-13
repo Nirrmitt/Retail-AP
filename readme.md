@@ -115,7 +115,8 @@ Dashboard → http://localhost:8501
 API Docs → http://localhost:8000/docs
 Health Check → http://localhost:8000/health
 
-## Project Structure'
+## Project Structure
+```bash
 
 ├── database/               # Schema & seed scripts
 ├── scripts/                # Data simulator
@@ -127,6 +128,7 @@ Health Check → http://localhost:8000/health
 ├── docker-compose.yml      # DB container
 ├── requirements.txt
 └── README.md
+```
 
 ## API Endpoints
 
