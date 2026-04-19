@@ -171,9 +171,13 @@ Manage secrets via environment variables
 ## 🤝 Connect & Contribute
 I’m always open to feedback, collaboration, or chat about analytics engineering, automation, or data storytelling.
 📧 Email: nirrmit.rtickoo@gmail.com
+
 🌐 Portfolio: [NRT](https://nirrmitt.github.io/NRT-Terminal)
+
 💼 LinkedIn: [Nirrmit R. Tickoo](https://www.linkedin.com/in/n-r-t/)
+
 🐙 GitHub: [ @nirrmitt](https://github.com/Nirrmitt)
+
 🔧 Found a bug or have an idea? Open an issue or submit a PR. I review all contributions!
 
 ### 📜 License
